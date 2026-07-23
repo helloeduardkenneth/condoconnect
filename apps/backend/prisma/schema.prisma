@@ -7,27 +7,183 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum PropertyType {
+  CONDO
+  VILLAGE
+  GATED_COMMUNITY
+}
+
+enum UnitStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+}
+
+enum UserStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+}
+
 enum UserRole {
   RESIDENT
   ADMIN
   GUARD
 }
 
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum OccupancyType {
+  OWNER
+  TENANT
+  FAMILY_MEMBER
+}
+
+enum VehicleStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model Tenant {
-  id        String   @id @default(uuid())
-  name      String
-  address   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id         String     @id @default(uuid())
+  name       String
+  slug       String     @unique
+  address    String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  deletedAt  DateTime?
+  properties Property[]
+
+  @@map("tenants")
+}
+
+model Property {
+  id             String         @id @default(uuid())
+  tenantId       String
+  name           String
+  address        String
+  propertyType   PropertyType   @default(CONDO)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+  tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  buildings      Building[]
+  userProperties UserProperty[]
+
+  @@index([tenantId])
+  @@map("properties")
+}
+
+model Building {
+  id          String    @id @default(uuid())
+  propertyId  String
+  name        String
+  totalFloors Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  units       Unit[]
+
+  @@index([propertyId])
+  @@map("buildings")
+}
+
+model Unit {
+  id            String         @id @default(uuid())
+  buildingId    String
+  unitNumber    String
+  floorNumber   Int?
+  status        UnitStatus     @default(AVAILABLE)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+  building      Building       @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  unitOccupants UnitOccupant[]
+
+  @@unique([buildingId, unitNumber])
+  @@index([buildingId])
+  @@map("units")
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  role      UserRole @default(RESIDENT)
-  tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String         @id @default(uuid())
+  email          String         @unique
+  phoneNumber    String         @unique
+  fullName       String
+  avatarUrl      String?
+  status         UserStatus     @default(INVITED)
+  lastLoginAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+  userProperties UserProperty[]
+  unitOccupants  UnitOccupant[]
+
+  @@map("users")
+}
+
+model UserProperty {
+  id                String           @id @default(uuid())
+  userId            String
+  propertyId        String
+  role              UserRole         @default(RESIDENT)
+  status            MembershipStatus @default(PENDING)
+  joinedAt          DateTime         @default(now())
+  invitedBy         String?
+  isPrimaryProperty Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  deletedAt         DateTime?
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property          Property         @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
+  @@map("user_properties")
+}
+
+model UnitOccupant {
+  id                    String        @id @default(uuid())
+  userId                String
+  unitId                String
+  occupancyType         OccupancyType @default(TENANT)
+  isPrimaryContact      Boolean       @default(false)
+  moveInDate            DateTime      @default(now())
+  moveOutDate           DateTime?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  deletedAt             DateTime?
+  user                  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit                  Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  vehicles              Vehicle[]
+
+  @@index([userId])
+  @@index([unitId])
+  @@map("unit_occupants")
+}
+
+model Vehicle {
+  id            String        @id @default(uuid())
+  occupantId    String
+  plateNumber   String        @unique
+  make          String
+  model         String
+  color         String
+  stickerNumber String?       @unique
+  status        VehicleStatus @default(ACTIVE)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+  occupant      UnitOccupant  @relation(fields: [occupantId], references: [id], onDelete: Cascade)
+
+  @@index([occupantId])
+  @@map("vehicles")
 }

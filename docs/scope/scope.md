@@ -40,13 +40,13 @@ Capture project conventions, then install lint, format, and type check enforceme
 Core multi tenant entities every feature builds on including tenants, properties, units, residents, staff, and access permissions.
 **Done when:** database schema and relationships support multi tenant isolation and core operations without a breaking migration.
 - [x] Design it (spec): `/architect data model`
-- [ ] Build it: `/develop data model`
-   - [ ] Schema + constraints: entities, enums, soft delete fields, composite indexes (AC-1..AC-6)
-   - [ ] Prisma client generation & migration: client export + migration script (AC-7, AC-8)
-   - [ ] Seed data script: test tenant, property, unit, and user records (AC-1, AC-3)
+- [x] Build it: `/develop data model`
+   - [x] Schema + constraints: entities, enums, soft delete fields, composite indexes (AC-1..AC-6)
+   - [x] Prisma client generation & migration: client export + migration script (AC-7, AC-8)
+   - [x] Seed data script: test tenant, property, unit, and user records (AC-1, AC-3)
 - [ ] Verify it: `/check verify data model`
 - [ ] Test it: `/test data model`
-Spec 0002
+Spec 0002 · code in `apps/backend/prisma/`
 
 ### 4. Design system & UI foundation · needs a decision
 Visual language, layout primitives, and base components so mobile screens for residents, admins, and security guards feel cohesive and accessible.
