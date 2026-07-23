@@ -11,7 +11,7 @@ CondoConnect is a production grade community management platform for condominium
 |---|---------|-------|--------|
 | 1 | Stack & architecture | Foundation | in-progress |
 | 2 | Coding standards & tooling | Foundation | planned |
-| 3 | Data model | Foundation | in-progress |
+| 3 | Data model | Foundation | done |
 | 4 | Design system & UI foundation | Foundation | planned |
 | 5 | Multi tenant authentication & core access loop | Slice 1 | planned |
 | 6 | Gate pass & visitor management | Slice 2 | planned |
@@ -36,7 +36,7 @@ Capture project conventions, then install lint, format, and type check enforceme
 - [x] Install the tooling: `/develop tooling`
 - [ ] Check it runs clean: `/test`
 
-### 3. Data model · in-progress
+### 3. Data model · done
 Core multi tenant entities every feature builds on including tenants, properties, units, residents, staff, and access permissions.
 **Done when:** database schema and relationships support multi tenant isolation and core operations without a breaking migration.
 - [x] Design it (spec): `/architect data model`
@@ -45,7 +45,7 @@ Core multi tenant entities every feature builds on including tenants, properties
    - [x] Prisma client generation & migration: client export + migration script (AC-7, AC-8)
    - [x] Seed data script: test tenant, property, unit, and user records (AC-1, AC-3)
 - [x] Verify it: `/check verify data model`
-- [ ] Test it: `/test data model`
+- [x] Test it: `/test data model`
 Spec 0002 · code in `apps/backend/prisma/`
 
 ### 4. Design system & UI foundation · needs a decision
