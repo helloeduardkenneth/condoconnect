@@ -33,7 +33,7 @@ Spec 0001 · code in `./`
 Capture project conventions, then install lint, format, and type check enforcement from the real scaffolded project.
 **Done when:** root `AGENTS.md` reflects the real stack, and linting and formatting check run clean.
 - [x] Capture conventions + tooling choices: `/audit`
-- [ ] Install the tooling: `/develop tooling`
+- [x] Install the tooling: `/develop tooling`
 - [ ] Check it runs clean: `/test`
 
 ### 3. Data model · needs a decision

@@ -40,6 +40,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - Pre commit enforcements: Run lint, format, and typecheck checks on staged files before commit.
 - Testing gate: Unit and integration tests using Jest and React Native Testing Library required before releases.
 - Continuous integration: GitHub Actions workflow enforcing lint, typecheck, build, and test checks on pull requests and pushes.
+- Git milestone reminders: Proactively suggest or remind the user to commit working changes to git whenever a major milestone is completed (scaffolding setup, approved spec creation, or feature verification).
 
 ## Agent skills
 
