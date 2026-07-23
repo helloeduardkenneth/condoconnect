@@ -44,7 +44,7 @@ Core multi tenant entities every feature builds on including tenants, properties
    - [x] Schema + constraints: entities, enums, soft delete fields, composite indexes (AC-1..AC-6)
    - [x] Prisma client generation & migration: client export + migration script (AC-7, AC-8)
    - [x] Seed data script: test tenant, property, unit, and user records (AC-1, AC-3)
-- [ ] Verify it: `/check verify data model`
+- [x] Verify it: `/check verify data model`
 - [ ] Test it: `/test data model`
 Spec 0002 · code in `apps/backend/prisma/`
 
